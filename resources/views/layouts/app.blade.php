@@ -38,7 +38,7 @@
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
 
-            <a href="index.html" class="logo d-flex align-items-center me-auto">
+            <a href="{{ route('home') }}" class="logo d-flex align-items-center me-auto">
                 <img src="assets/img/logo.png" alt="">
             </a>
 
@@ -72,8 +72,17 @@
                             data-bs-target="#enquiryModal">Get Enquiry</a></li>
 
                     <li>
-                    <a style="background: #F05709; border-radius: 30px; padding: 5px 10px 5px 10px; color: white; margin-left: 10px;"
-                    class="btn-getstarted d-flex" href="{{route('login')}}">Login</a></li>
+                        <a style="background: #67ad66; border-radius: 30px; padding: 5px 10px 5px 10px; color: white; margin-left: 10px;"
+                            class="btn-getstarted d-flex" href="{{route('login')}}">Login</a>
+                    </li>
+                    @if (auth()->user())
+                        
+                    <li>
+                        <a style="background: #67ad66; border-radius: 30px; padding: 5px 10px 5px 10px; color: white; margin-left: 10px;"
+                            class="btn-getstarted d-flex" href="{{route('login')}}">LogOut</a>
+                    </li>
+                    @endif
+
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
