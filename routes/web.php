@@ -27,7 +27,10 @@ Route::get('development', [DefaultController::class,'development'])->name('devel
 Route::get('mobileapplication', [DefaultController::class,'mobileapplication'])->name('mobileapplication');
 Route::get('erpdevelopment', [DefaultController::class,'erpdevelopment'])->name('erpdevelopment');
 Route::get('contact', [DefaultController::class,'contact'])->name('contact');
-Route::get('login', [DefaultController::class,'login'])->name('login');
+Route::get('login', [DefaultController::class,'showLoginForm'])->name('login');
+Route::post('login', [DefaultController::class,'login']);
+Route::get('signup', [DefaultController::class,'signup'])->name('signup');
+Route::post('register', [DefaultController::class,'register']);
 
 
 
