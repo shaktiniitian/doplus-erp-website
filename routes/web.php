@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\DefaultController;
+use App\Http\Controllers\OrganizationController;
+use App\Models\Organization;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,23 +16,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DefaultController::class,'home'])->name('home');
+Route::get('/', [DefaultController::class, 'home'])->name('home');
 
-Route::get('doplusjaurney', [DefaultController::class,'doplusjaurney'])->name('doplusjaurney');
+Route::get('doplusjaurney', [DefaultController::class, 'doplusjaurney'])->name('doplusjaurney');
 
-Route::get('ourobjective', [DefaultController::class,'ourobjective'])->name('ourobjective');
+Route::get('ourobjective', [DefaultController::class, 'ourobjective'])->name('ourobjective');
 
-Route::get('dtpleducationerp', [DefaultController::class,'dtpleducationerp'])->name('dtpleducationerp');
+Route::get('dtpleducationerp', [DefaultController::class, 'dtpleducationerp'])->name('dtpleducationerp');
 
-Route::get('webdesign', [DefaultController::class,'webdesign'])->name('webdesign');
-Route::get('development', [DefaultController::class,'development'])->name('development');
-Route::get('mobileapplication', [DefaultController::class,'mobileapplication'])->name('mobileapplication');
-Route::get('erpdevelopment', [DefaultController::class,'erpdevelopment'])->name('erpdevelopment');
-Route::get('contact', [DefaultController::class,'contact'])->name('contact');
-Route::get('login', [DefaultController::class,'showLoginForm'])->name('login');
-Route::post('login', [DefaultController::class,'login']);
-Route::get('signup', [DefaultController::class,'signup'])->name('signup');
-Route::post('register', [DefaultController::class,'register']);
+Route::get('webdesign', [DefaultController::class, 'webdesign'])->name('webdesign');
+Route::get('development', [DefaultController::class, 'development'])->name('development');
+Route::get('mobileapplication', [DefaultController::class, 'mobileapplication'])->name('mobileapplication');
+Route::get('erpdevelopment', [DefaultController::class, 'erpdevelopment'])->name('erpdevelopment');
+Route::get('contact', [DefaultController::class, 'contact'])->name('contact');
+Route::get('login', [DefaultController::class, 'showLoginForm'])->name('login');
+Route::post('login', [DefaultController::class, 'login']);
+Route::get('signup', [DefaultController::class, 'signup'])->name('signup');
+Route::post('register', [DefaultController::class, 'register']);
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('organizations', [OrganizationController::class, 'index'])->name('organizations');
+    Route::get('organization', [OrganizationController::class, 'organization'])->name('organization');
+    Route::post('organization', [OrganizationController::class, 'store'])->name('store-organization');
+    Route::get('profile', [DefaultController::class, 'profile'])->name('profile');
+});
+
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/login'); // Or wherever you want to redirect after logout
+})->name('logout');
 
 
 
