@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class DefaultController extends Controller
 {
@@ -57,6 +58,9 @@ class DefaultController extends Controller
 
     public function showLoginForm()
     {
+        if (auth()->user()) {
+            return redirect()->to(url()->previous());
+        }
         return view(view: "login");
     }
 
@@ -68,19 +72,19 @@ class DefaultController extends Controller
     public function login(Request $request)
     {
 
+
         $credentials = $request->validate([
             'type' => 'required',
-            'mobile' => 'required|digits:10',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
-        return back()->withErrors([
-            'error' => 'Please enter valid login details.',
-        ]);
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return $request->all();
-            // return redirect()->intended('/dashboard');
+            if ($request->type == 2) {
+                return redirect()->intended('/organizations');
+            }
         }
 
         return back()->withErrors([
@@ -94,7 +98,7 @@ class DefaultController extends Controller
     {
 
         $request->validate([
-            'type' => 'required',
+            // 'type' => 'required',
             'company' => 'required|string|max:50',
             'name' => 'required|string|max:50',
             'email' => 'required|email',
@@ -102,10 +106,18 @@ class DefaultController extends Controller
             'address' => 'required|string',
         ]);
 
+        if (auth()->user()) {
+            $user = User::find(auth()->user()->id);
+        } else {
+            $user = new User();
+            $user->password = Hash::make($request->mobile);
+            $user->type = $request->type;
+        }
 
-        $user = new User();
-        $user->type = $request->type;
+
+
         $user->company = $request->company;
+        $user->name = $request->name;
         $user->email = $request->email;
         $user->mobile = $request->mobile;
         $user->address = $request->address;
@@ -116,8 +128,15 @@ class DefaultController extends Controller
         $user->save();
 
         return back()->with([
-            'success' => 'Form has been submitted successfully.',
+            'success' => auth()->user() ? 'Profile has been updated successfully.' : 'Form has been submitted successfully.',
         ]);
 
+    }
+
+    public function profile()
+    {
+
+        $user = auth()->user();
+        return view('signup')->with('user', $user);
     }
 }
