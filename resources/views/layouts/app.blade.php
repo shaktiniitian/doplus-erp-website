@@ -18,6 +18,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Vendor CSS Files -->
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -28,6 +31,7 @@
 
     <!-- Main CSS File -->
     <link href="{{ asset('assets/css/main.css')}}" rel="stylesheet">
+
 
 </head>
 
@@ -45,7 +49,7 @@
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="{{route('home')}}#hero">Home</a></li>
-                    <li class="dropdown"><a href="Doplusjaurney.html"><span>About US</span> <i
+                    <li class="dropdown"><a href="Doplusjaurney.html"><span>About</span> <i
                                 class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
                             <li><a href="{{route('doplusjaurney')}}">Doplus Journey</a></li>
@@ -55,6 +59,7 @@
 
                     <li>
                         <!--<li><a href="doplusbusineserp.html">Doplus Business ERP</a></li>-->
+                    <li><a href="{{route('dtpleducationerp')}}">Doplus Business ERP</a></li>
                     <li><a href="{{route('dtpleducationerp')}}">Doplus Educational ERP</a></li>
                     <li class="dropdown"><a href="#"><span>Services</span> <i
                                 class="bi bi-chevron-down toggle-dropdown"></i></a>
@@ -65,21 +70,34 @@
                             <li><a href="{{route('erpdevelopment')}}">Custom ERP Development</a></li>
 
                         </ul>
+                    </li>
 
                     <li><a href="{{route('contact')}}">Contact Us</a></li>
-                    <li><a style="background: #F05709; border-radius: 30px; padding: 5px 10px 5px 10px; color: white;"
-                            class="btn-getstarted d-flex" href="#" data-bs-toggle="modal"
-                            data-bs-target="#enquiryModal">Get Enquiry</a></li>
+                    @if (!auth()->user())
+                        <li><a style="background: #F05709; border-radius: 30px; padding: 5px 10px 5px 10px; color: white;"
+                                class="btn-getstarted d-flex" href="#" data-bs-toggle="modal"
+                                data-bs-target="#enquiryModal">Get Enquiry</a></li>
+                    @endif
+
+                    @if (auth()->user())
+                        <li class="dropdown"><a href="#" class="text-primary"><i class="fa fa-circle-user"
+                                        style="font-size: 25px;"></i>{{ auth()->user()->name }} </a>
+                            <ul>
+                                <li><a href="{{route('profile')}}">Profile</a></li>
+                                <li><a href="{{route('organizations')}}">Organizations</a></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                       <button type="submit" class="btn btn-link text-default" style="margin-left:10px;">LogOut</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
 
                     <li>
                         <a style="background: #67ad66; border-radius: 30px; padding: 5px 10px 5px 10px; color: white; margin-left: 10px;"
                             class="btn-getstarted d-flex" href="{{route('login')}}">Login</a>
-                    </li>
-                    @if (auth()->user())
-                        
-                    <li>
-                        <a style="background: #67ad66; border-radius: 30px; padding: 5px 10px 5px 10px; color: white; margin-left: 10px;"
-                            class="btn-getstarted d-flex" href="{{route('login')}}">LogOut</a>
                     </li>
                     @endif
 
