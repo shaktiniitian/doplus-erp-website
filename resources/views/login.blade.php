@@ -30,9 +30,9 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Mobile Number</label>
-                        <input type="text" maxlength="10" value="{{ old('mobile') }}" name="mobile" class="form-control">
-                        @error('mobile')
+                        <label for="exampleInputEmail1" class="form-label">Email ID</label>
+                        <input type="email" value="{{ old('email') }}" name="email" class="form-control">
+                        @error('email')
                             <div class="text-danger fs-6">{{ $message }}</div>
                         @enderror
                     </div>
