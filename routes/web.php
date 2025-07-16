@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DefaultController;
 use App\Http\Controllers\OrganizationController;
 use App\Models\Organization;
@@ -46,6 +47,16 @@ Route::post('/logout', function () {
     request()->session()->regenerateToken();
     return redirect('/login'); // Or wherever you want to redirect after logout
 })->name('logout');
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('login', [AdminController::class, 'login'])->name('admin-login');
+    Route::post('do-login', [AdminController::class, 'doLogin'])->name('do-login');
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+});
+
+
 
 
 
